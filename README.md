@@ -68,16 +68,3 @@ This repository contains a comprehensive solution to monitor disk utilization ac
 
 ---
 
-## Contribution & Testing
-
-- The playbook has been tested against multiple AWS accounts with varying instance counts.
-
-- Code follows Ansible best practices with clear variable names, comments, and error handling.
-
-- Contributions and improvements are welcome via pull requests.
-
----
-
-## Contact
-
-For questions or support, please contact **[Your Name]** at **[your.email@example.com]**.
