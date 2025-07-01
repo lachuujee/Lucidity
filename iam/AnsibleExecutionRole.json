@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "arn:aws:iam::<Account1ID>:role/AnsibleCrossAccountRole",
+        "arn:aws:iam::<Account2ID>:role/AnsibleCrossAccountRole",
+        "arn:aws:iam::<Account3ID>:role/AnsibleCrossAccountRole"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": "arn:aws:s3:::your-s3-bucket-name/*"
+    }
+  ]
+}
