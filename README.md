@@ -1,14 +1,16 @@
 # Lucidity
 Assignment round
 
-Multi-Account AWS EC2 Disk Utilization Monitoring Solution
-Overview
+
+
+**Multi-Account AWS EC2 Disk Utilization Monitoring Solution**
+**Overview**
 This repository contains a comprehensive solution to monitor disk utilization across EC2 instances in multiple AWS accounts using Ansible. It leverages AWS IAM roles for secure cross-account access, AWS Systems Manager (SSM) for remote command execution, and AWS APIs to gather detailed volume and usage data.
 
-Contents
-Ansible Playbook: Automates data collection of EC2 instances, attached EBS volumes, and their disk usage across multiple AWS accounts.
+**Contents**
+**Ansible Playbook:** Automates data collection of EC2 instances, attached EBS volumes, and their disk usage across multiple AWS accounts.
 
-Jinja2 Template: Generates a consolidated CSV report with instance and volume utilization details.
+**Jinja2 Template:** Generates a consolidated CSV report with instance and volume utilization details.
 
 Architecture Diagram: Visual representation of the solution components, IAM roles, and data flow.
 
