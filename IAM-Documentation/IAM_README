@@ -8,11 +8,11 @@ This document explains the complete IAM role setup and trust relationships used 
 
 ## Roles Involved
 
-| Role Name              | Location (AWS Account)     | Purpose / Use Case                                    |
-|------------------------|---------------------------|-----------------------------------------------------|
-| **AnsibleExecutionRole** | Central Monitoring Account | Attached to Ansible server EC2 instance. Allows assuming roles in member accounts. |
-| **AnsibleCrossAccountRole** | Each Member AWS Account    | Trusted by central account role. Grants permissions to query EC2 and run SSM commands. |
-| **EC2MonitoringRole**   | Each EC2 instance          | Attached to EC2 instances. Allows SSM agent & CloudWatch agent to operate correctly. |
+| Role Name                      | Location (AWS Account)      | Purpose / Use Case                                                                    |
+|------------------------        |---------------------------  |-----------------------------------------------------                                  |
+| **AnsibleExecutionRole**       | Central Monitoring Account  | Attached to Ansible server EC2 instance. Allows assuming roles in member accounts.    |
+| **AnsibleCrossAccountRole**    | Each Member AWS Account     | Trusted by central account role. Grants permissions to query EC2 and run SSM commands.|
+| **EC2MonitoringRole**          | Each EC2 instance           | Attached to EC2 instances. Allows SSM agent & CloudWatch agent to operate correctly.  |
 
 ---
 
