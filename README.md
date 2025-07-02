@@ -12,7 +12,7 @@ This repository contains a comprehensive solution to monitor disk utilization ac
 
 - **Jinja2 Template:** Generates a consolidated CSV report with instance and volume utilization details.
 
-- **Architecture Diagram:** Visual representation of the solution components, IAM roles, and data flow.
+- **Architecture Diagram:** Included as a PowerPoint presentation in the TAD section, providing a detailed, well-labeled visual of the solution components, IAM roles, trust policies, and data flow.
 
 - **Documentation:** Explanation of the IAM roles, permissions, and step-by-step execution details.
 
@@ -20,51 +20,62 @@ This repository contains a comprehensive solution to monitor disk utilization ac
 
 ## Key Features
 
-- **Centralized Monitoring:** Collects metrics from multiple AWS accounts securely via cross-account IAM roles.
+- **Centralized Monitoring:** Collects metrics securely from multiple AWS accounts using cross-account IAM roles.
 
-- **Detailed Metrics:** Retrieves number of attached EBS volumes, individual volume sizes, and disk usage.
+- **Detailed Metrics:** Retrieves the number of attached EBS volumes, individual volume sizes, and disk usage per instance.
 
-- **Secure Role-Based Access:** Implements least privilege IAM roles with clearly defined trust relationships.
+- **Secure Role-Based Access:** Implements least privilege IAM roles with clearly defined trust relationships, avoiding hardcoded credentials.
 
-- **Automated Reporting:** Generates a consolidated CSV report and uploads it to an S3 bucket for further analysis.
+- **Automated Reporting:** Generates a consolidated CSV report uploaded to a centralized S3 bucket for easy analysis.
 
-- **Extensible Design:** Easily scalable for additional AWS accounts or expanded monitoring.
+- **Extensible Design:** Easily scalable to incorporate additional AWS accounts or extend monitoring scope.
 
 ---
 
 ## Solution Architecture
 
-*(Include your detailed, well-labeled architecture diagram here — explain IAM roles, trust policies, SSM communication, and data aggregation flow.)*
+The detailed architecture diagram is provided as a PowerPoint file under the TAD (Technical Architecture Document) section of this repository. It visually explains the following:
+
+- IAM roles and their trust relationships enabling secure cross-account access.
+
+- The flow of commands via AWS Systems Manager (SSM) to EC2 instances.
+
+- Data aggregation and report generation steps.
+
+- Network and security boundaries enforced by IAM and AWS service endpoints.
 
 ---
 
 ## Setup & Usage
 
-1. **Configure IAM roles:**
+1. **Configure IAM Roles:**
 
-   - Create and attach `AnsibleExecutionRole` in the central account with `sts:AssumeRole` permission on member accounts.
+   - **Central Account Role (`AnsibleExecutionRole`):**  
+     This role is created in the central monitoring account and is granted permission to assume roles in member accounts via `sts:AssumeRole`. It orchestrates data collection by assuming member account roles.
 
-   - Create `AnsibleCrossAccountRole` in each member account trusted by the central role, with permissions for EC2 describe and SSM actions.
+   - **Member Account Role (`AnsibleCrossAccountRole`):**  
+     Created in each member AWS account, this role trusts the central account’s `AnsibleExecutionRole` and grants permissions required to describe EC2 instances, access EBS volume information, and execute commands via SSM (`ec2:DescribeInstances`, `ssm:SendCommand`, etc.).
 
-   - Ensure EC2 instances have SSM agent installed and an IAM role attached with `AmazonSSMManagedInstanceCore` and `CloudWatchAgentServerPolicy`.
+   - **EC2 Instance Role:**  
+     Each EC2 instance must have an attached IAM role with `AmazonSSMManagedInstanceCore` and `CloudWatchAgentServerPolicy` to enable Systems Manager communication and monitoring.
 
-2. **Update playbook variables:**
+2. **Update Playbook Variables:**
 
-   - Add AWS account IDs and cross-account role ARNs.
+   - Define the list of AWS account IDs and their respective member account role ARNs.
 
-   - Specify the target S3 bucket for report upload.
+   - Specify the S3 bucket name and path for uploading the generated CSV report.
 
-3. **Run the Ansible playbook** to collect metrics, generate the CSV report, and upload to S3.
+3. **Run the Ansible Playbook:**  
+   Executes cross-account role assumption, gathers disk utilization data, generates a consolidated CSV report using the Jinja2 template, and uploads it securely to the specified S3 bucket.
 
 ---
 
 ## Security Considerations
 
-- No AWS access keys or secrets are hardcoded; all access uses IAM roles and temporary credentials.
+- The solution strictly avoids hardcoding AWS access keys or secrets; it exclusively uses IAM roles and temporary STS credentials.
 
-- Network security is maintained by relying on AWS Systems Manager endpoints and role-based permissions.
+- Network security leverages AWS Systems Manager endpoints and enforced IAM policies for least privilege access.
 
-- All sensitive operations are audited by AWS CloudTrail.
+- All operations are logged and auditable via AWS CloudTrail for compliance and troubleshooting.
 
 ---
-
